@@ -1,0 +1,36 @@
+<section class="hero">
+  <p class="lead">welcome {{ name() | uppercase }}</p>
+  <h1>Hello, {{ title() }}</h1>
+
+  <app-counter-card
+    [label]="name()"
+    [value]="count()"
+    (valueChange)="updateCount($event)"
+  ></app-counter-card>
+
+  @if (count() > 0) {
+    <p class="message">Vous avez cliqué {{ count() }} fois.</p>
+  } @else {
+    <p class="message">Cliquez pour commencer.</p>
+  }
+
+  <label class="field">
+    <span>Nom</span>
+    <input [value]="name()" (input)="updateName($any($event.target).value)" />
+  </label>
+
+  <p class="message">Bonjour {{ name() }} !</p>
+
+  <div class="module-panel">
+    <h2>Modules</h2>
+
+    @for (module of modules; track module.title) {
+      <div class="module-item" [class.done]="module.done">
+        <span>{{ module.title | uppercase }}</span>
+        <span>{{ module.startDate | date: 'dd/MM/yyyy' }}</span>
+      </div>
+    } @empty {
+      <p>Aucun module disponible.</p>
+    }
+  </div>
+</section>
