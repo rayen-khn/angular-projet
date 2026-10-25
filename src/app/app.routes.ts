@@ -18,6 +18,13 @@ export const routes: Routes = [
   { path: 'list', redirectTo: 'conferences', pathMatch: 'full' },
   { path: 'details/:id', redirectTo: 'conferences/:id' },
 
+  // Prosit Seance 3: Personalized program / bookings view
+  {
+    path: 'bookings',
+    loadComponent: () =>
+      import('./bookings/bookings.component').then((m) => m.BookingsComponent),
+  },
+
   // Prosit 4: Administrative module with child routes, lazy-loaded on demand
   {
     path: 'admin',

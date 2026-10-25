@@ -1,0 +1,46 @@
+<div class="bookings-container">
+  <div class="bookings-header">
+    <div>
+      <h1>Mon Programme Personnalisé</h1>
+      <p class="subtitle">Consultez et gérez vos réservations de conférences en temps réel.</p>
+    </div>
+    @if (count() > 0) {
+      <button (click)="clearAll()" class="btn-clear">Tout annuler</button>
+    }
+  </div>
+
+  @if (count() > 0) {
+    <div class="bookings-list">
+      @for (conf of bookings(); track conf.id) {
+        <div class="booking-item">
+          <div class="conf-info">
+            <span class="conf-topic">{{ conf.topic || 'Conférence' }}</span>
+            <h3>{{ conf.name }}</h3>
+            <div class="conf-meta">
+              <span>📅 {{ conf.date }}</span>
+              <span>📍 {{ conf.place }}</span>
+            </div>
+          </div>
+
+          <div class="item-actions">
+            <a [routerLink]="['/conferences', conf.id]" class="btn-view">
+              Voir la session
+            </a>
+            <button (click)="cancel(conf.id)" class="btn-cancel">
+              Annuler
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="empty-state">
+      <div class="empty-icon">🎟️</div>
+      <h2>Aucune réservation pour le moment</h2>
+      <p>Votre programme est vide. Explorez le catalogue pour vous inscrire à des sessions.</p>
+      <a routerLink="/conferences" class="btn-catalog">
+        Parcourir le catalogue des conférences →
+      </a>
+    </div>
+  }
+</div>

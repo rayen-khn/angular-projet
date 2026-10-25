@@ -14,8 +14,14 @@
     <div class="info-box">
       <span>📧 Un e-mail de confirmation contenant votre badge d'accès a été envoyé.</span>
     </div>
-    <button (click)="backToConferences()" class="btn-return">
-      ← Retour à la liste des conférences
-    </button>
+
+    <div class="actions">
+      <button (click)="backToConferences()" class="btn-return">
+        ← Retour au catalogue
+      </button>
+      <button (click)="viewBookings()" class="btn-bookings">
+        🎟️ Voir mon programme
+      </button>
+    </div>
   </div>
 </div>

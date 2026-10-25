@@ -1,36 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { ConferenceService } from './conference.service';
+import { Conference } from '../models/conference.model';
+
+export { ConferenceService };
+export type { Conference };
 
 @Injectable({
   providedIn: 'root',
 })
 export class Conferance {
-    conferences: any[] = [
-    {
-      id: 1,
-      name: 'Angular Conference',
-      date: '2026-10-15',
-      place: 'Tunis'
-    },
-    {
-      id: 2,
-      name: 'Java Conference',
-      date: '2026-10-20',
-      place: 'Sousse'
-    },
-    {
-      id: 3,
-      name: 'AI Conference',
-      date: '2026-10-25',
-      place: 'Sfax'
-    }
-  ];
+  private conferenceService = inject(ConferenceService);
 
-  getAll(): any[] {
-    return this.conferences;
+  get conferences(): Conference[] {
+    return this.conferenceService.getAll();
   }
 
-  getById(id: number): any  {
-    console.log('id', id);
-    return this.conferences.find(conf => conf.id === id);
+  getAll(): Conference[] {
+    return this.conferenceService.getAll();
+  }
+
+  getById(id: number): Conference | undefined {
+    return this.conferenceService.getById(id);
   }
 }

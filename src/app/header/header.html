@@ -1,7 +1,7 @@
 <header class="navbar">
   <div class="brand">
     <span class="logo">⚡</span>
-    <strong>4SSA5 Events</strong>
+    <strong>ConfTech Platform</strong>
   </div>
 
   <nav class="nav-links">
@@ -9,7 +9,13 @@
       Accueil
     </a>
     <a routerLink="/conferences" routerLinkActive="active">
-      Conférences
+      Catalogue
+    </a>
+    <a routerLink="/bookings" routerLinkActive="active" class="booking-link">
+      <span>🎟️ Mes Réservations</span>
+      <span class="badge" [class.has-bookings]="bookingCount() > 0">
+        {{ bookingCount() }}
+      </span>
     </a>
     <a routerLink="/admin" routerLinkActive="active">
       Administration

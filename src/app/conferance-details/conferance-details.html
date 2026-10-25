@@ -3,9 +3,16 @@
     <div class="card-header">
       <span class="badge">CONFÉRENCE #{{ id() }}</span>
       <h1>{{ conference.name }}</h1>
+      @if (conference.topic) {
+        <span class="topic-pill">{{ conference.topic }}</span>
+      }
     </div>
 
     <div class="card-body">
+      @if (conference.description) {
+        <p class="description">{{ conference.description }}</p>
+      }
+
       <div class="info">
         <span class="icon">📅</span>
         <div>
@@ -22,13 +29,34 @@
         </div>
       </div>
 
+      @if (conference.availableSeats !== undefined) {
+        <div class="info">
+          <span class="icon">💺</span>
+          <div>
+            <span class="label">Disponibilité</span>
+            <p>{{ conference.availableSeats }} places restantes (sur {{ conference.totalSeats }})</p>
+          </div>
+        </div>
+      }
+
+      <!-- Synchronized real-time booking alert -->
+      @if (isBooked()) {
+        <div class="booking-status-alert">
+          <span>✓ Vous avez déjà réservé une place pour cette conférence.</span>
+          <button (click)="toggleBooking()" class="btn-cancel-sm">Annuler ma réservation</button>
+        </div>
+      }
+
       <div class="actions">
         <button (click)="goBack()" class="back-link">
-          ← Retour aux conférences
+          ← Retour au catalogue
         </button>
-        <button (click)="register()" class="register-btn">
-          S'inscrire à cette conférence →
-        </button>
+
+        @if (!isBooked()) {
+          <button (click)="register()" class="register-btn">
+            🎟️ Confirmer ma réservation →
+          </button>
+        }
       </div>
     </div>
   </div>

@@ -1,20 +1,69 @@
-<h1>Conférences disponibles</h1>
+<div class="catalog-header">
+  <h1>Catalogue des Conférences</h1>
+  <p class="subtitle">Parcourez les événements technologiques et réservez vos places en temps réel.</p>
+
+  <!-- Filter tabs by topic -->
+  <div class="topics-filter">
+    @for (t of topics(); track t) {
+      <button
+        class="topic-btn"
+        [class.active]="selectedTopic() === t"
+        (click)="onSelectTopic(t)"
+      >
+        {{ t }}
+      </button>
+    }
+  </div>
+</div>
 
 <div class="cards-container">
-  @for (conf of conferances; track conf.id) {
-    <div class="card">
-      <img
-        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87"
-        alt="Conference"
-      />
+  @for (conf of conferences(); track conf.id) {
+    <div class="card" [class.booked-card]="isBooked(conf.id)">
+      @if (conf.image) {
+        <img [src]="conf.image" [alt]="conf.name" />
+      }
 
       <div class="card-content">
-        <h2>{{ conf.name }}</h2>
-        <p>📅 {{ conf.date }}</p>
-        <p>📍 {{ conf.place }}</p>
-      </div>
+        @if (conf.topic) {
+          <span class="topic-tag">{{ conf.topic }}</span>
+        }
 
-      <button [routerLink]="['/conferences', conf.id]">Voir les détails</button>
+        <h2>{{ conf.name }}</h2>
+
+        <div class="meta-row">
+          <span>📅 {{ conf.date }}</span>
+          <span>📍 {{ conf.place }}</span>
+        </div>
+
+        @if (conf.availableSeats !== undefined) {
+          <p class="seats-info">
+            💺 Places disponibles : <strong>{{ conf.availableSeats }}</strong>
+          </p>
+        }
+
+        <div class="card-actions">
+          <button
+            class="booking-btn"
+            [class.booked]="isBooked(conf.id)"
+            (click)="toggleBooking(conf)"
+          >
+            @if (isBooked(conf.id)) {
+              ✓ Place réservée (Annuler)
+            } @else {
+              🎟️ Réserver ma place
+            }
+          </button>
+
+          <a [routerLink]="['/conferences', conf.id]" class="details-link">
+            Détails →
+          </a>
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <div class="empty-state">
+      <p>Aucune conférence trouvée pour le sujet sélectionné.</p>
+      <button (click)="onSelectTopic('Tous')">Voir toutes les conférences</button>
     </div>
   }
 </div>

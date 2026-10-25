@@ -15,4 +15,8 @@ export class Confirmation {
   backToConferences(): void {
     this.router.navigate(['/conferences']);
   }
+
+  viewBookings(): void {
+    this.router.navigate(['/bookings']);
+  }
 }

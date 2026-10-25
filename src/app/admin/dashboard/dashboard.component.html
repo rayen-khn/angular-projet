@@ -1,10 +1,10 @@
 <div class="dashboard-header">
   <h1>Tableau de bord administrateur</h1>
-  <p class="desc">Aperçu global de la gestion des conférences et des événements.</p>
+  <p class="desc">Aperçu global de la gestion des conférences et des événements en direct.</p>
 </div>
 
 <div class="metrics-grid">
-  @for (item of metrics; track item.label) {
+  @for (item of metrics(); track item.label) {
     <div class="metric-card" [style.borderTopColor]="item.color">
       <div class="metric-icon">{{ item.icon }}</div>
       <div class="metric-info">
@@ -18,8 +18,8 @@
 <div class="recent-box">
   <h2>Dernières activités</h2>
   <ul>
-    <li>Nouvelle inscription enregistrée pour la <strong>Conférence Angular</strong> (Tunis)</li>
-    <li>Mise à jour des horaires pour la <strong>Conférence Java</strong> (Sousse)</li>
-    <li>Clôture des inscriptions anticipées pour la <strong>Conférence AI</strong> (Sfax)</li>
+    <li>Système d'injection de dépendances centralisé actif (Singleton <code>BookingService</code>).</li>
+    <li>Synchronisation réactive temps réel entre le catalogue et la barre de navigation.</li>
+    <li>Catalogue de conférences filtré réactivement via <code>ConferenceService</code>.</li>
   </ul>
 </div>

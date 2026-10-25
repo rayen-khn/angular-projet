@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
+import { ConferenceService } from '../../services/conference.service';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,10 +9,37 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
-  metrics = [
-    { label: 'Conférences actives', value: '3', icon: '🎤', color: '#3b82f6' },
-    { label: 'Inscriptions totales', value: '148', icon: '📝', color: '#10b981' },
-    { label: 'Intervenants confirmés', value: '12', icon: '💼', color: '#8b5cf6' },
-    { label: 'Taux de satisfaction', value: '98%', icon: '⭐', color: '#f59e0b' },
-  ];
+  // Prosit Seance 3: Modern Dependency Injection
+  private conferenceService = inject(ConferenceService);
+  private bookingService = inject(BookingService);
+
+  readonly totalConferences = computed(() => this.conferenceService.conferences().length);
+  readonly userBookingsCount = this.bookingService.bookingCount;
+
+  readonly metrics = computed(() => [
+    {
+      label: 'Conférences au catalogue',
+      value: `${this.totalConferences()}`,
+      icon: '🎤',
+      color: '#3b82f6',
+    },
+    {
+      label: 'Réservations session active',
+      value: `${this.userBookingsCount()}`,
+      icon: '🎟️',
+      color: '#10b981',
+    },
+    {
+      label: 'Intervenants confirmés',
+      value: '12',
+      icon: '💼',
+      color: '#8b5cf6',
+    },
+    {
+      label: 'Taux de satisfaction',
+      value: '98%',
+      icon: '⭐',
+      color: '#f59e0b',
+    },
+  ]);
 }
