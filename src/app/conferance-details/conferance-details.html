@@ -1,29 +1,41 @@
-{{id()}}
-<div class="card">
-  <div class="card-header">
-    <span class="badge">CONFERENCE</span>
-    <h1>{{ conference.name }}</h1>
-  </div>
-
-  <div class="card-body">
-    <div class="info">
-      <span class="icon">📅</span>
-      <div>
-        <span class="label">Date</span>
-        <p>{{ conference.date }}</p>
-      </div>
+@if (conference) {
+  <div class="card">
+    <div class="card-header">
+      <span class="badge">CONFÉRENCE #{{ id() }}</span>
+      <h1>{{ conference.name }}</h1>
     </div>
 
-    <div class="info">
-      <span class="icon">📍</span>
-      <div>
-        <span class="label">Place</span>
-        <p>{{ conference.place }}</p>
+    <div class="card-body">
+      <div class="info">
+        <span class="icon">📅</span>
+        <div>
+          <span class="label">Date de l'événement</span>
+          <p>{{ conference.date }}</p>
+        </div>
+      </div>
+
+      <div class="info">
+        <span class="icon">📍</span>
+        <div>
+          <span class="label">Lieu</span>
+          <p>{{ conference.place }}</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button (click)="goBack()" class="back-link">
+          ← Retour aux conférences
+        </button>
+        <button (click)="register()" class="register-btn">
+          S'inscrire à cette conférence →
+        </button>
       </div>
     </div>
-
-    <a (click)="goBack()" class="back-link">
-      ← Back to conferences
-    </a>
   </div>
-</div>
+} @else {
+  <div class="not-found-card">
+    <h2>Conférence introuvable</h2>
+    <p>Aucune conférence trouvée avec l'identifiant #{{ id() }}.</p>
+    <button (click)="goBack()" class="back-link">← Retour</button>
+  </div>
+}

@@ -1,0 +1,18 @@
+<div class="stats-header">
+  <h1>Statistiques des événements</h1>
+  <p class="desc">Taux de remplissage et statistiques de participation par conférence.</p>
+</div>
+
+<div class="stats-list">
+  @for (s of stats; track s.name) {
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="conf-name">{{ s.name }}</span>
+        <span class="conf-numbers">{{ s.registrations }} / {{ s.capacity }} inscrits ({{ s.progress }}%)</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" [style.width.%]="s.progress"></div>
+      </div>
+    </div>
+  }
+</div>

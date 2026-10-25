@@ -1,0 +1,29 @@
+<div class="users-header">
+  <h1>Gestion des utilisateurs</h1>
+  <p class="desc">Liste des participants, intervenants et administrateurs de la plateforme.</p>
+</div>
+
+<div class="table-container">
+  <table class="users-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Rôle</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (u of users; track u.id) {
+        <tr>
+          <td>#{{ u.id }}</td>
+          <td class="user-name"><strong>{{ u.name }}</strong></td>
+          <td>{{ u.email }}</td>
+          <td><span class="role-badge">{{ u.role }}</span></td>
+          <td><span class="status-badge" [class.active]="u.status === 'Actif'">{{ u.status }}</span></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

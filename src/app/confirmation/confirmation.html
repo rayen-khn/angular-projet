@@ -1,0 +1,21 @@
+<div class="confirmation-container">
+  <div class="confirmation-card">
+    <div class="icon">🎉</div>
+    <h2>Inscription confirmée !</h2>
+    @if (name()) {
+      <p class="desc">
+        Votre inscription à la conférence <strong>{{ name() }}</strong> (ID : #{{ id() }}) a été enregistrée avec succès.
+      </p>
+    } @else {
+      <p class="desc">
+        Votre inscription a bien été prise en compte par le système.
+      </p>
+    }
+    <div class="info-box">
+      <span>📧 Un e-mail de confirmation contenant votre badge d'accès a été envoyé.</span>
+    </div>
+    <button (click)="backToConferences()" class="btn-return">
+      ← Retour à la liste des conférences
+    </button>
+  </div>
+</div>

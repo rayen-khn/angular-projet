@@ -1,53 +1,45 @@
-import { Component, input, output ,inject} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Component, input, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Conferance } from '../services/conferance';
 
 @Component({
   selector: 'app-conferance-details',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './conferance-details.html',
   styleUrl: './conferance-details.css',
 })
-export class ConferanceDetails {
-  //   conferances :any[]=[
-  //   {id:1,name:"angular",date:"2023-01-01",place:"tunis"},
-  //   {id:2,name:"react",date:"2023-02-01",place:"sfax"},
-  //   {id:3,name:"vue",date:"2023-03-01",place:"sousse"},
-  // ]
-//   conf=input<any>()
-//  inc = output();
-//   onsave(){
-//     this.inc.emit();
-//   }
-//private aroute = inject(ActivatedRoute);
-//activated Route
-// constructor(private aroute:ActivatedRoute){
-//   this.id = this.aroute.snapshot.params['id'];
-//   console.log(this.id);
-  
-// }
-conference?: any;
-constructor(
-  private conferenceService: Conferance
-) {}
- id= input.required<string>();
+export class ConferanceDetails implements OnInit {
+  // Prosit 3: Route Parameter with Signals / withComponentInputBinding
+  id = input.required<string>();
+  conference?: any;
 
- ngOnInit() {
-const id = Number(this.id());
-  this.conference = this.conferenceService.getById(id);
- 
- }
+  private conferenceService = inject(Conferance);
+  private router = inject(Router);
 
+  // Alternative ActivatedRoute approaches explained in class:
+  // constructor(private aroute: ActivatedRoute) {
+  //   this.id = this.aroute.snapshot.params['id'];
+  // }
+  // OR with Observable:
+  // this.route.paramMap.pipe(takeUntilDestroyed()).subscribe(params => ...);
 
+  ngOnInit(): void {
+    const numericId = Number(this.id());
+    this.conference = this.conferenceService.getById(numericId);
+  }
 
-// constructor(
-//   private route: ActivatedRoute,
-//   private conferenceService: Conferance
-// ) {
-//   const id = Number(this.route.snapshot.params['id']);
-// }
-  private r = inject(Router);
-   goBack() {
-    this.r.navigate(['/list']);
+  // Prosit 3: Programmatic navigation after registration
+  register(): void {
+    this.router.navigate(['/confirmation'], {
+      queryParams: {
+        id: this.id(),
+        name: this.conference?.name ?? '',
+      },
+    });
+  }
+
+  // Programmatic back navigation
+  goBack(): void {
+    this.router.navigate(['/conferences']);
   }
 }

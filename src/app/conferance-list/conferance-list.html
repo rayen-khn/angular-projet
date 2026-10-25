@@ -1,9 +1,8 @@
-<h1>Conferences</h1>
+<h1>Conférences disponibles</h1>
 
 <div class="cards-container">
-  @for (conf of conferances; track $index) {
+  @for (conf of conferances; track conf.id) {
     <div class="card">
-
       <img
         src="https://images.unsplash.com/photo-1540575467063-178a50c2df87"
         alt="Conference"
@@ -11,12 +10,11 @@
 
       <div class="card-content">
         <h2>{{ conf.name }}</h2>
-
         <p>📅 {{ conf.date }}</p>
         <p>📍 {{ conf.place }}</p>
-
       </div>
-      <button [routerLink]="['/details', conf.id]">Details</button>
+
+      <button [routerLink]="['/conferences', conf.id]">Voir les détails</button>
     </div>
   }
 </div>
