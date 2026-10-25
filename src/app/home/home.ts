@@ -1,29 +1,33 @@
 import { Component, signal } from '@angular/core';
-import { DatePipe, UpperCasePipe } from '@angular/common';
-import { CounterCard } from '../counter-card/counter-card';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [DatePipe, UpperCasePipe, CounterCard],
+  imports: [FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
-  protected readonly title = signal('projectName');
-  protected readonly count = signal(0);
-  protected readonly name = signal('4SSA5');
+  username="mohamed";
 
-  protected readonly modules = [
-    { title: 'Angular basics', startDate: new Date(2026, 8, 15), done: true },
-    { title: 'Components', startDate: new Date(2026, 8, 20), done: true },
-    { title: 'Directives and pipes', startDate: new Date(2026, 8, 27), done: false },
-  ];
+  onsave(){alert("saved");}
+  imgurl="https://www.neosoft.fr/wp-content/uploads/2023/02/angular.png"
+  nom="ahmed";
 
-  protected updateCount(value: number): void {
-    this.count.set(value);
+  count=signal(0);
+  countS=0
+  //simple
+inc(){
+  this.countS++;
+}
+///signal
+  increment(){
+    this.count.update((c)=>c+1);
+
   }
-
-  protected updateName(value: string): void {
-    this.name.set(value.trim() || '4SSA5');
-  }
+  students=["ahmed","mohamed","ali","sami"];
+  students2=[{name:"ahmed",age:20},
+              {name:"mohamed",age:30},
+              {name:"ali",age:40},
+               {name:"sami",age:50}];
 }

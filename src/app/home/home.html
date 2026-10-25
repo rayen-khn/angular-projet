@@ -1,36 +1,26 @@
-<section class="hero">
-  <p class="lead">welcome {{ name() | uppercase }}</p>
-  <h1>Hello, {{ title() }}</h1>
+<p>welcome 4ssa5</p>
 
-  <app-counter-card
-    [label]="name()"
-    [value]="count()"
-    (valueChange)="updateCount($event)"
-  ></app-counter-card>
+<h1>interpolation {{username}}</h1>
+<button (click)="onsave()">Eventbinding</button>
+<img [src]="imgurl" style="width: 100px; height: 100px;" />
 
-  @if (count() > 0) {
-    <p class="message">Vous avez cliqué {{ count() }} fois.</p>
-  } @else {
-    <p class="message">Cliquez pour commencer.</p>
-  }
+<input type="text" [(ngModel)]="nom" /> {{nom}}
 
-  <label class="field">
-    <span>Nom</span>
-    <input [value]="name()" (input)="updateName($any($event.target).value)" />
-  </label>
-
-  <p class="message">Bonjour {{ name() }} !</p>
-
-  <div class="module-panel">
-    <h2>Modules</h2>
-
-    @for (module of modules; track module.title) {
-      <div class="module-item" [class.done]="module.done">
-        <span>{{ module.title | uppercase }}</span>
-        <span>{{ module.startDate | date: 'dd/MM/yyyy' }}</span>
-      </div>
-    } @empty {
-      <p>Aucun module disponible.</p>
-    }
-  </div>
-</section>
+<h2>signal : {{count()}}</h2>
+<button (click)="increment()">increment</button>
+<button (click)="inc()">inc simple</button>
+<h2> {{countS}} </h2>
+@if(nom == "4ssa5"){
+    <p>4ssa5 est egal a 4ssa5</p>
+}
+@else{
+    <p>4ssa5 n'est pas egal a 4ssa5</p>
+}
+<h2>students (simple)</h2>
+@for( item of students;track $index){
+    <p> {{item}} </p>
+} 
+<h2>students (objet)</h2>  
+@for( item of students2;track $index){
+    <p> {{item.name}} - {{item.age}} </p>
+} 
