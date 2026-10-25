@@ -8,8 +8,11 @@
     <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       Accueil
     </a>
-    <a routerLink="/conferences" routerLinkActive="active">
+    <a routerLink="/conferences" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
       Catalogue
+    </a>
+    <a routerLink="/conferences/add" routerLinkActive="active" class="btn-nav-add">
+      + Ajouter
     </a>
     <a routerLink="/bookings" routerLinkActive="active" class="booking-link">
       <span>🎟️ Mes Réservations</span>

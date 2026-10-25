@@ -10,44 +10,60 @@ export class ConferenceService {
     {
       id: 1,
       name: 'Angular Conference',
+      title: 'Angular Conference',
       date: '2026-10-15',
       place: 'Tunis',
       topic: 'Frontend & Architecture',
+      category: 'Frontend & Architecture',
       description: 'Découvrez les nouveautés d\'Angular 21 : Signals, hydration, routing avancé et lazy loading modulaire.',
       totalSeats: 80,
+      maxParticipants: 80,
+      nbParticipants: 68,
       availableSeats: 12,
       image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87',
     },
     {
       id: 2,
       name: 'Java Conference',
+      title: 'Java Conference',
       date: '2026-10-20',
       place: 'Sousse',
       topic: 'Backend & Cloud',
+      category: 'Backend & Cloud',
       description: 'Microservices, Spring Boot 3, Virtual Threads et architectures résilientes en production.',
       totalSeats: 60,
+      maxParticipants: 60,
+      nbParticipants: 52,
       availableSeats: 8,
       image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
     },
     {
       id: 3,
       name: 'AI Conference',
+      title: 'AI Conference',
       date: '2026-10-25',
       place: 'Sfax',
       topic: 'Intelligence Artificielle',
+      category: 'Intelligence Artificielle',
       description: 'Agents autonomes, LLMs d\'entreprise, RAG et applications pratiques en entreprise.',
       totalSeats: 100,
+      maxParticipants: 100,
+      nbParticipants: 28,
       availableSeats: 72,
       image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e',
     },
     {
       id: 4,
       name: 'Cybersecurity Summit',
+      title: 'Cybersecurity Summit',
       date: '2026-11-05',
       place: 'Tunis',
       topic: 'Sécurité & DevOps',
+      category: 'Sécurité & DevOps',
       description: 'Protection des APIs, Zero Trust, sécurité cloud native et conformité réglementaire.',
       totalSeats: 50,
+      maxParticipants: 50,
+      nbParticipants: 35,
       availableSeats: 15,
       image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b',
     },
@@ -56,10 +72,10 @@ export class ConferenceService {
   // Selected filter topic
   selectedTopic = signal<string>('Tous');
 
-  // Computed list of unique topics
+  // Computed list of unique topics/categories
   topics = computed<string[]>(() => {
     const list = this.conferencesSignal()
-      .map((c) => c.topic)
+      .map((c) => c.topic || c.category)
       .filter((t): t is string => !!t);
     return ['Tous', ...Array.from(new Set(list))];
   });
@@ -71,7 +87,7 @@ export class ConferenceService {
     if (topic === 'Tous') {
       return list;
     }
-    return list.filter((c) => c.topic === topic);
+    return list.filter((c) => (c.topic || c.category) === topic);
   });
 
   // Readonly access to full list
@@ -87,5 +103,31 @@ export class ConferenceService {
 
   setTopicFilter(topic: string): void {
     this.selectedTopic.set(topic);
+  }
+
+  // Prosit 2 & 3: Add new conference from ReactiveForm
+  addConference(conf: Omit<Conference, 'id'> & { id?: number }): Conference {
+    const list = this.conferencesSignal();
+    const newId = list.length > 0 ? Math.max(...list.map((c) => c.id)) + 1 : 1;
+    const name = conf.title || conf.name || `Conférence #${newId}`;
+    const topic = conf.category || conf.topic || 'Frontend & Architecture';
+    const maxParticipants = conf.maxParticipants ?? conf.totalSeats ?? 50;
+
+    const newConf: Conference = {
+      ...conf,
+      id: newId,
+      name,
+      title: name,
+      topic,
+      category: topic,
+      maxParticipants,
+      totalSeats: maxParticipants,
+      nbParticipants: 0,
+      availableSeats: maxParticipants,
+      image: conf.image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87',
+    };
+
+    this.conferencesSignal.update((current) => [...current, newConf]);
+    return newConf;
   }
 }

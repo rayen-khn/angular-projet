@@ -17,6 +17,7 @@ export const routes: Routes = [
   // Backward-compatible routes for Prosit 2 & 3
   { path: 'list', redirectTo: 'conferences', pathMatch: 'full' },
   { path: 'details/:id', redirectTo: 'conferences/:id' },
+  { path: 'add-conference', redirectTo: 'conferences/add', pathMatch: 'full' },
 
   // Prosit Seance 3: Personalized program / bookings view
   {

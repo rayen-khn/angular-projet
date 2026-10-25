@@ -1,0 +1,173 @@
+<div class="form-page-container">
+  <div class="form-card">
+    <div class="form-header">
+      <div class="header-top">
+        <a routerLink="/conferences" class="back-link">← Retour au catalogue</a>
+        <!-- Prosit 3: État de validité en temps réel grâce aux Signals -->
+        <span class="status-indicator" [class.valid]="isFormValid()">
+          @if (isFormValid()) {
+            ✓ Formulaire complet & valide
+          } @else {
+            ⚠️ Champs requis incomplets
+          }
+        </span>
+      </div>
+      <h1>Ajouter une Conférence</h1>
+      <p class="subtitle">Remplissez les informations ci-dessous pour créer une nouvelle session de conférence.</p>
+    </div>
+
+    <form [formGroup]="conferenceForm" (ngSubmit)="onSubmit()" class="form-body" novalidate>
+      <!-- Title -->
+      <div class="form-group" [class.has-error]="isInvalid('title')">
+        <div class="label-row">
+          <label for="title">Titre de la conférence <span class="req">*</span></label>
+          <!-- Prosit 3: Nombre de caractères en temps réel -->
+          <span class="char-count">{{ titleCharCount() }} caractères</span>
+        </div>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="Ex: Angular 21 Architecture & Signals"
+        />
+        @if (isInvalid('title')) {
+          <div class="error-msg">
+            @if (conferenceForm.controls.title.errors?.['required']) {
+              <span>Le titre est obligatoire.</span>
+            }
+            @if (conferenceForm.controls.title.errors?.['minlength']) {
+              <span>Le titre doit comporter au moins 3 caractères.</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Category & Place Grid -->
+      <div class="form-row">
+        <div class="form-group" [class.has-error]="isInvalid('category')">
+          <label for="category">Catégorie / Sujet <span class="req">*</span></label>
+          <select id="category" formControlName="category">
+            <option value="" disabled selected>Sélectionnez une catégorie...</option>
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+          @if (isInvalid('category')) {
+            <div class="error-msg">
+              <span>Veuillez sélectionner une catégorie.</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-group" [class.has-error]="isInvalid('place')">
+          <label for="place">Lieu / Ville <span class="req">*</span></label>
+          <input
+            id="place"
+            type="text"
+            formControlName="place"
+            placeholder="Ex: Tunis, Sousse, Sfax..."
+          />
+          @if (isInvalid('place')) {
+            <div class="error-msg">
+              <span>Le lieu est obligatoire.</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Date & Max Participants Grid -->
+      <div class="form-row">
+        <div class="form-group" [class.has-error]="isInvalid('date')">
+          <label for="date">Date de la conférence <span class="req">*</span></label>
+          <input
+            id="date"
+            type="date"
+            formControlName="date"
+          />
+          @if (isInvalid('date')) {
+            <div class="error-msg">
+              <span>La date est obligatoire.</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-group" [class.has-error]="isInvalid('maxParticipants')">
+          <label for="maxParticipants">Nombre maximal de participants <span class="req">*</span></label>
+          <input
+            id="maxParticipants"
+            type="number"
+            min="1"
+            max="1000"
+            formControlName="maxParticipants"
+            placeholder="Ex: 80"
+          />
+          @if (isInvalid('maxParticipants')) {
+            <div class="error-msg">
+              @if (conferenceForm.controls.maxParticipants.errors?.['required']) {
+                <span>Le nombre de participants est requis.</span>
+              }
+              @if (conferenceForm.controls.maxParticipants.errors?.['min'] || conferenceForm.controls.maxParticipants.errors?.['max']) {
+                <span>Doit être compris entre 1 et 1000 participants.</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Image URL -->
+      <div class="form-group">
+        <label for="image">URL de l'image de couverture (optionnel)</label>
+        <input
+          id="image"
+          type="url"
+          formControlName="image"
+          placeholder="https://images.unsplash.com/..."
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="form-group" [class.has-error]="isInvalid('description')">
+        <div class="label-row">
+          <label for="description">Description détaillée <span class="req">*</span></label>
+          <!-- Prosit 3: Nombre de caractères saisis en temps réel (Signal) -->
+          <span class="char-count" [class.near-limit]="descriptionCharCount() > 450">
+            {{ descriptionCharCount() }} / 500 caractères
+          </span>
+        </div>
+        <textarea
+          id="description"
+          rows="4"
+          formControlName="description"
+          placeholder="Présentez le programme, les thématiques abordées et les prérequis de la session..."
+        ></textarea>
+        @if (isInvalid('description')) {
+          <div class="error-msg">
+            @if (conferenceForm.controls.description.errors?.['required']) {
+              <span>La description est obligatoire.</span>
+            }
+            @if (conferenceForm.controls.description.errors?.['minlength']) {
+              <span>La description doit comporter au moins 10 caractères.</span>
+            }
+            @if (conferenceForm.controls.description.errors?.['maxlength']) {
+              <span>La description ne peut pas dépasser 500 caractères.</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <a routerLink="/conferences" class="btn-cancel">Annuler</a>
+
+        <!-- Prosit 3: Activation automatique du bouton « Enregistrer » via isFormValid() Signal -->
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="!isFormValid()"
+        >
+          Enregistrer la conférence
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

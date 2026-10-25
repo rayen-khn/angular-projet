@@ -1,6 +1,15 @@
 .catalog-header {
-  text-align: center;
   padding: 30px 20px 10px;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .catalog-header h1 {
@@ -11,7 +20,24 @@
 
 .subtitle {
   color: #64748b;
-  margin: 0 0 24px;
+  margin: 0;
+}
+
+.btn-create-conf {
+  background: #10b981;
+  color: white;
+  text-decoration: none;
+  padding: 11px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-create-conf:hover {
+  background: #059669;
+  transform: translateY(-2px);
 }
 
 .topics-filter {
@@ -19,6 +45,7 @@
   justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 24px;
   margin-bottom: 24px;
 }
 

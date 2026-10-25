@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-// Prosit 4: Modular Child Routes for Conferences feature
+// Modular Child Routes for Conferences feature
 export const CONFERENCE_ROUTES: Routes = [
   {
     path: '',
@@ -8,8 +8,17 @@ export const CONFERENCE_ROUTES: Routes = [
       import('../conferance-list/conferance-list').then((m) => m.ConferanceList),
   },
   {
+    path: 'add',
+    loadComponent: () =>
+      import('../conference-form/conference-form.component').then(
+        (m) => m.ConferenceFormComponent
+      ),
+  },
+  {
     path: ':id',
     loadComponent: () =>
-      import('../conferance-details/conferance-details').then((m) => m.ConferanceDetails),
+      import('../conferance-details/conferance-details').then(
+        (m) => m.ConferanceDetails
+      ),
   },
 ];
