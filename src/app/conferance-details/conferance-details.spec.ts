@@ -22,4 +22,18 @@ describe('ConferanceDetails', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should consume update and delete methods from Conferance service', () => {
+    expect(component.conference).toBeDefined();
+
+    const updated = component.update({
+      ...component.conference!,
+      place: 'Kairouan',
+    });
+    expect(updated?.place).toBe('Kairouan');
+    expect(component.conference?.place).toBe('Kairouan');
+
+    const deleted = component.delete(9999);
+    expect(deleted).toBe(false);
+  });
 });

@@ -130,4 +130,76 @@ export class ConferenceService {
     this.conferencesSignal.update((current) => [...current, newConf]);
     return newConf;
   }
+
+  // Alias for addConference
+  add(conf: Omit<Conference, 'id'> & { id?: number }): Conference {
+    return this.addConference(conf);
+  }
+
+  // Prosit / TD: Méthode de mise à jour d'une conférence
+  update(updatedConf: Conference): Conference | undefined;
+  update(id: number, updatedConf: Partial<Conference>): Conference | undefined;
+  update(idOrConf: number | Conference, maybeConf?: Partial<Conference>): Conference | undefined {
+    const list = this.conferencesSignal();
+    const id = typeof idOrConf === 'number' ? idOrConf : idOrConf.id;
+    const patch = typeof idOrConf === 'number' ? (maybeConf ?? {}) : idOrConf;
+
+    const index = list.findIndex((c) => c.id === id);
+    if (index === -1) {
+      return undefined;
+    }
+
+    const current = list[index];
+    const name = patch.title || patch.name || current.name;
+    const title = patch.title || patch.name || current.title || current.name;
+    const topic = patch.category || patch.topic || current.topic || current.category;
+    const category = patch.category || patch.topic || current.category || current.topic;
+    const maxParticipants = patch.maxParticipants ?? patch.totalSeats ?? current.maxParticipants;
+    const totalSeats = patch.totalSeats ?? patch.maxParticipants ?? current.totalSeats;
+    const nbParticipants = patch.nbParticipants ?? current.nbParticipants ?? 0;
+    const availableSeats =
+      patch.availableSeats ??
+      (maxParticipants !== undefined ? Math.max(0, maxParticipants - nbParticipants) : current.availableSeats);
+
+    const merged: Conference = {
+      ...current,
+      ...patch,
+      id,
+      name,
+      title,
+      topic,
+      category,
+      maxParticipants,
+      totalSeats,
+      nbParticipants,
+      availableSeats,
+    };
+
+    this.conferencesSignal.update((items) =>
+      items.map((c) => (c.id === id ? merged : c))
+    );
+
+    return merged;
+  }
+
+  // Alias compatible updateConference
+  updateConference(idOrConf: number | Conference, maybeConf?: Partial<Conference>): Conference | undefined {
+    return this.update(idOrConf as any, maybeConf as any);
+  }
+
+  // Prosit / TD: Méthode de suppression d'une conférence par ID
+  delete(id: number): boolean {
+    const list = this.conferencesSignal();
+    const exists = list.some((c) => c.id === id);
+    if (!exists) {
+      return false;
+    }
+    this.conferencesSignal.update((current) => current.filter((c) => c.id !== id));
+    return true;
+  }
+
+  // Alias compatible deleteConference
+  deleteConference(id: number): boolean {
+    return this.delete(id);
+  }
 }

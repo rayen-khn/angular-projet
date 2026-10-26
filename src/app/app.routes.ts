@@ -18,6 +18,7 @@ export const routes: Routes = [
   { path: 'list', redirectTo: 'conferences', pathMatch: 'full' },
   { path: 'details/:id', redirectTo: 'conferences/:id' },
   { path: 'add-conference', redirectTo: 'conferences/add', pathMatch: 'full' },
+  { path: 'edit-conference/:id', redirectTo: 'conferences/edit/:id' },
 
   // Prosit Seance 3: Personalized program / bookings view
   {

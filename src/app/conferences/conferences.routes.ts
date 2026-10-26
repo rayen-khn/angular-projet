@@ -15,6 +15,13 @@ export const CONFERENCE_ROUTES: Routes = [
       ),
   },
   {
+    path: 'edit/:id',
+    loadComponent: () =>
+      import('../conference-form/conference-form.component').then(
+        (m) => m.ConferenceFormComponent
+      ),
+  },
+  {
     path: ':id',
     loadComponent: () =>
       import('../conferance-details/conferance-details').then(

@@ -1,6 +1,7 @@
 import { Component, input, inject, OnInit, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConferenceService } from '../services/conference.service';
+import { Conferance } from '../services/conferance';
 import { BookingService } from '../services/booking.service';
 import { Conference } from '../models/conference.model';
 
@@ -16,6 +17,7 @@ export class ConferanceDetails implements OnInit {
 
   // Modern Dependency Injection via inject()
   private conferenceService = inject(ConferenceService);
+  private conferanceService = inject(Conferance);
   private bookingService = inject(BookingService);
   private router = inject(Router);
 
@@ -26,7 +28,37 @@ export class ConferanceDetails implements OnInit {
 
   ngOnInit(): void {
     const numericId = Number(this.id());
-    this.conference = this.conferenceService.getById(numericId);
+    // Consommation de la méthode getById du service Conferance
+    this.conference =
+      this.conferanceService.getById(numericId) ||
+      this.conferenceService.getById(numericId);
+  }
+
+  // Consommation de la méthode delete du service Conferance
+  delete(id?: number): boolean {
+    const targetId = id !== undefined ? id : Number(this.id());
+    const deleted = this.conferanceService.delete(targetId);
+    if (deleted) {
+      this.router.navigate(['/conferences']);
+    }
+    return deleted;
+  }
+
+  deleteConference(id?: number): boolean {
+    return this.delete(id);
+  }
+
+  // Consommation de la méthode update du service Conferance
+  update(conference: Conference): Conference | undefined {
+    const updated = this.conferanceService.update(conference);
+    if (updated) {
+      this.conference = updated;
+    }
+    return updated;
+  }
+
+  updateConference(conference: Conference): Conference | undefined {
+    return this.update(conference);
   }
 
   // Toggle booking directly from details

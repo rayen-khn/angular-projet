@@ -49,4 +49,24 @@ describe('ConferenceFormComponent', () => {
     expect(component.conferenceForm.valid).toBe(true);
     expect(component.isFormValid()).toBe(true);
   });
+
+  it('should consume update and delete methods from the service', () => {
+    const list = conferenceService.getAll();
+    expect(list.length).toBeGreaterThan(0);
+    const target = list[0];
+
+    const updated = component.update({
+      ...target,
+      name: 'Component Updated Conf',
+    });
+    expect(updated?.name).toBe('Component Updated Conf');
+
+    const created = conferenceService.addConference({
+      name: 'To be deleted by component',
+      date: '2026-12-05',
+      place: 'Gabes',
+    });
+    const deleted = component.delete(created.id);
+    expect(deleted).toBe(true);
+  });
 });
