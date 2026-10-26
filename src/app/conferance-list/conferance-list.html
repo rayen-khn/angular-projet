@@ -65,6 +65,15 @@
             Détails →
           </a>
         </div>
+
+        <div class="card-admin-actions">
+          <a [routerLink]="['/conferences/edit', conf.id]" class="btn-action-edit">
+            ✏️ Modifier
+          </a>
+          <button (click)="delete(conf.id)" class="btn-action-delete">
+            🗑️ Supprimer
+          </button>
+        </div>
       </div>
     </div>
   } @empty {

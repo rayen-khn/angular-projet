@@ -12,8 +12,10 @@
           }
         </span>
       </div>
-      <h1>Ajouter une Conférence</h1>
-      <p class="subtitle">Remplissez les informations ci-dessous pour créer une nouvelle session de conférence.</p>
+      <h1>{{ isEditMode ? 'Modifier la Conférence' : 'Ajouter une Conférence' }}</h1>
+      <p class="subtitle">
+        {{ isEditMode ? 'Modifiez les informations de la session de conférence.' : 'Remplissez les informations ci-dessous pour créer une nouvelle session de conférence.' }}
+      </p>
     </div>
 
     <form [formGroup]="conferenceForm" (ngSubmit)="onSubmit()" class="form-body" novalidate>
@@ -165,7 +167,7 @@
           class="btn-submit"
           [disabled]="!isFormValid()"
         >
-          Enregistrer la conférence
+          {{ isEditMode ? 'Mettre à jour la conférence' : 'Enregistrer la conférence' }}
         </button>
       </div>
     </form>

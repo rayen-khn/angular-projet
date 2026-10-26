@@ -34,11 +34,14 @@ export class ConferanceList {
 
   // Consommation du service Conferance: suppression d'une conférence
   delete(id: number): boolean {
-    return this.conferanceService.delete(id);
+    if (confirm('Voulez-vous vraiment supprimer cette conférence ?')) {
+      return this.conferanceService.delete(id);
+    }
+    return false;
   }
 
   deleteConference(id: number): boolean {
-    return this.conferanceService.deleteConference(id);
+    return this.delete(id);
   }
 
   // Consommation du service Conferance: mise à jour d'une conférence

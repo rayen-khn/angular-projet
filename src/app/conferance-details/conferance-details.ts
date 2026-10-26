@@ -1,5 +1,5 @@
 import { Component, input, inject, OnInit, computed } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ConferenceService } from '../services/conference.service';
 import { Conferance } from '../services/conferance';
 import { BookingService } from '../services/booking.service';
@@ -7,7 +7,7 @@ import { Conference } from '../models/conference.model';
 
 @Component({
   selector: 'app-conferance-details',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './conferance-details.html',
   styleUrl: './conferance-details.css',
 })
@@ -37,11 +37,14 @@ export class ConferanceDetails implements OnInit {
   // Consommation de la méthode delete du service Conferance
   delete(id?: number): boolean {
     const targetId = id !== undefined ? id : Number(this.id());
-    const deleted = this.conferanceService.delete(targetId);
-    if (deleted) {
-      this.router.navigate(['/conferences']);
+    if (confirm('Voulez-vous vraiment supprimer cette conférence ?')) {
+      const deleted = this.conferanceService.delete(targetId);
+      if (deleted) {
+        this.router.navigate(['/conferences']);
+      }
+      return deleted;
     }
-    return deleted;
+    return false;
   }
 
   deleteConference(id?: number): boolean {

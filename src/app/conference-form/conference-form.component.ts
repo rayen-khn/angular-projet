@@ -1,4 +1,4 @@
-import { Component, inject, computed, OnInit, input } from '@angular/core';
+import { Component, inject, computed, OnInit, input, effect } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -24,6 +24,21 @@ export class ConferenceFormComponent implements OnInit {
   id = input<string | undefined>();
   isEditMode = false;
   editingId: number | null = null;
+
+  constructor() {
+    effect(() => {
+      const inputId = this.id();
+      if (inputId) {
+        const numId = Number(inputId);
+        const existing = this.conferance.getById(numId) || this.conferenceService.getById(numId);
+        if (existing) {
+          this.isEditMode = true;
+          this.editingId = existing.id;
+          this.loadConferenceIntoForm(existing);
+        }
+      }
+    });
+  }
 
   // Available categories for selection
   categories = [

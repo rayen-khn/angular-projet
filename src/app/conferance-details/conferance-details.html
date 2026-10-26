@@ -52,6 +52,14 @@
           ← Retour au catalogue
         </button>
 
+        <a [routerLink]="['/conferences/edit', conference.id]" class="btn-action-edit-detail">
+          ✏️ Modifier
+        </a>
+
+        <button (click)="delete()" class="btn-action-delete-detail">
+          🗑️ Supprimer
+        </button>
+
         @if (!isBooked()) {
           <button (click)="register()" class="register-btn">
             🎟️ Confirmer ma réservation →
